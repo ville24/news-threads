@@ -1,0 +1,33 @@
+services:
+  app:
+    image: threads-frontend-dev
+    build:
+      context: ./threads-frontend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./threads-frontend:/usr/src/app
+    ports:
+      - 5173:5173
+    container_name: threads-frontend-dev
+
+  app-backend:
+    image: threads-backend-dev
+    build:
+      context: ./threads-backend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./threads-backend:/usr/src/app
+    ports:
+      - 8081:8081
+    container_name: threads-backend-dev
+
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80 # this is needed
+    container_name: reverse-proxy
+    depends_on:
+      - app
+      - app-backend

@@ -1,0 +1,25 @@
+services:
+  app:
+    image: threads-frontend
+    build:
+      context: ./threads-frontend
+      dockerfile: Dockerfile
+    container_name: threads-frontend
+
+  app-backend:
+    image: threads-backend
+    build:
+      context: ./threads-backend
+      dockerfile: Dockerfile
+    container_name: threads-backend
+
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 80:80 # this is needed
+    container_name: reverse-proxy
+    depends_on:
+      - app
+      - app-backend
