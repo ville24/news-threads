@@ -1,5 +1,9 @@
 FROM node:20
 
+ARG RSS_BASE_URL
+
+ENV RSS_BASE_URL="/usr/src/app/tests/news/"
+
 WORKDIR /usr/src/app
 
 COPY . .
